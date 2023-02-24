@@ -32,7 +32,6 @@ const Login = () => {
     e.preventDefault();
     setSubMitted(true);
     if (email && password) {
-      console.log("email-password", email, password);
       const { from } = location.state || { from: { pathname: "/" } };
       dispatch(login(email, password, from));
     }

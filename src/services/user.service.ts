@@ -1,24 +1,22 @@
-import env from "react-dotenv";
+import { api, IPagination } from "../helpers";
+import { IUser } from "../stores/users/type";
 
-const login = async (email: string, password: string) => {
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  };
-  const response = await fetch(
-    `http://localhost:15000/api/v1/auth`,
-    requestOptions
-  );
-  const response_1 = await handleResponse(response);
-  sessionStorage.setItem("user", JSON.stringify(response_1));
-  return response_1;
+const login = async (email: string, password: string): Promise<any> => {
+  const body = { email, password };
+  return await api.post<any>("/v1/auth", body).then((response) => {
+    sessionStorage.setItem("user", JSON.stringify(response.data));
+    return response.data;
+  });
 };
-console.log("env.API_URL", env.API_URL);
+
 const logout = () => {
   sessionStorage.removeItem("user");
+};
+
+const getCurrentUser = async (): Promise<any> => {
+  return await api.get("/v1/auth").then((res) => {
+    return res.data;
+  });
 };
 
 const handleResponse = (response: any) => {
@@ -28,7 +26,6 @@ const handleResponse = (response: any) => {
       if (response.status === 401) {
         logout();
       }
-
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
     }
@@ -36,7 +33,20 @@ const handleResponse = (response: any) => {
   });
 };
 
+const getUsersPaging = async (
+  currentPage: number
+): Promise<IPagination<IUser>> => {
+  const res = await api
+    .get<IPagination<IUser>>(`/v1/users/paging/${currentPage}`)
+    .then((response) => {
+      return response.data;
+    });
+  return res;
+};
+
 export const userService = {
   login,
   logout,
+  getCurrentUser,
+  getUsersPaging,
 };

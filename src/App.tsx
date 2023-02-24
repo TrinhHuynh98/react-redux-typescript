@@ -8,11 +8,12 @@ import AdminPage from "./pages/Admin/AdminPage";
 import { AccountState } from "./stores/account/types";
 import { useSelector } from "react-redux";
 import { AppState } from "./stores";
+import Users from "./pages/Users/Users";
+import Home from "./pages/Home/Home";
 
 function App() {
   const account: AccountState = useSelector((state: AppState) => state.account);
 
-  console.log("account.token", account.token);
   return (
     <div id="wrapper" className="App">
       <Router>
@@ -22,7 +23,16 @@ function App() {
             element={
               <PrivateRoute login={account.token}>
                 {" "}
-                <AdminPage />
+                <Home />
+              </PrivateRoute>
+            }
+          ></Route>
+          <Route
+            path="/users"
+            element={
+              <PrivateRoute login={account.token}>
+                {" "}
+                <Users />
               </PrivateRoute>
             }
           ></Route>
