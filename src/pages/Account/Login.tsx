@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router";
+// import { useLocation } from "react-router";
 import { AppState } from "../../stores";
 import { login, logout } from "../../stores/account/actions";
 
@@ -17,11 +17,10 @@ const Login = () => {
   const { email, password } = inputs;
 
   const dispatch = useDispatch<any>();
-  const location = useLocation();
 
   useEffect(() => {
     dispatch(logout());
-  }, []);
+  }, [dispatch]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -32,8 +31,8 @@ const Login = () => {
     e.preventDefault();
     setSubMitted(true);
     if (email && password) {
-      const { from } = location.state || { from: { pathname: "/" } };
-      dispatch(login(email, password, from));
+      // const { from } = location.state || { from: { pathname: "/" } };
+      dispatch(login(email, password));
     }
   };
 

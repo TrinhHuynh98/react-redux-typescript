@@ -5,6 +5,7 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import { setAuthToken } from "../helpers/set-auth-token";
 import { usersReducer } from "./users/reducer";
+import { alertReducer } from "./alerts/reducer";
 
 const persistConfig = {
   key: "root",
@@ -23,6 +24,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const rootReducer = combineReducers({
   account: accountReducer,
   users: usersReducer,
+  alert: alertReducer,
 });
 
 // add persisted redux to keep page when refesh page
